@@ -1,26 +1,25 @@
-import pytz
 from datetime import datetime
+import pytz
 
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.http import Http404
 from django.urls import reverse_lazy
 from django.contrib.auth import get_user_model
-from django.views.generic import (
-    CreateView,
-    DetailView,
-    UpdateView,
-    ListView,
-    DeleteView,
-)
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.core.exceptions import PermissionDenied
 from django.db.models import Count
+from django.views.generic import (
+    CreateView,
+    DetailView,
+    DeleteView,
+    ListView,
+    UpdateView,
+)
 
 from blog.models import Category, Post, Comment
 from blog.forms import PostForm, CommentForm
 from blog.mixins import PostDispatchMixin
-from blog.constants import POSTS_PER_PAGE
 
 
 User = get_user_model()
@@ -31,7 +30,7 @@ class PostListView(ListView):
     model = Post
     template_name = "blog/index.html"
     context_object_name = "posts"
-    paginate_by = POSTS_PER_PAGE
+    paginate_by = 10
 
     def get_queryset(self):
         queryset = (
@@ -110,7 +109,7 @@ def user_profile(request, username):
     posts = profile.posts.annotate(comment_count=Count("comments")).order_by(
         "-pub_date"
     )
-    paginator = Paginator(posts, POSTS_PER_PAGE)
+    paginator = Paginator(posts, 10)
     page_obj = paginator.get_page(request.GET.get("page"))
     context = {
         "page_obj": page_obj,
@@ -199,7 +198,7 @@ def category_posts(request, category_slug):
         is_published=True,
         pub_date__lte=NOW,
     ).order_by("-pub_date")
-    paginator = Paginator(post_list, POSTS_PER_PAGE)
+    paginator = Paginator(post_list, 10)
     page_obj = paginator.get_page(request.GET.get("page"))
     context = {
         "category": category,

@@ -8,7 +8,7 @@ class TimeStampedModel(models.Model):
         "Опубликовано",
         default=True,
         blank=False,
-        help_text="""Снимите галочку, чтобы скрыть публикацию.""",
+        help_text="""Снимите галочку для скрытия публикацию.""",
     )
     created_at = models.DateTimeField(
         "Добавлено",

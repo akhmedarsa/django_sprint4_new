@@ -18,6 +18,9 @@ class CategoryAdmin(admin.ModelAdmin):
     search_fields = ("title",)
 
 
+admin.site.register(Location)
+
+
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = (
@@ -36,6 +39,3 @@ class PostAdmin(admin.ModelAdmin):
     search_fields = ("title",)
     list_filter = ("is_published",)
     list_display_links = ("title",)
-
-
-admin.site.register(Location)
